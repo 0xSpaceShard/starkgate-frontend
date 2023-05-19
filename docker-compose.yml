@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  starkgate-frontend:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: starkgate-frontend
+    container_name: starkgate-frontend
+    restart: always
+    environment:
+      REACT_APP_NAME: ${REACT_APP_NAME}
+      REACT_APP_VERSION: ${REACT_APP_VERSION}
+      REACT_APP_LOCAL_STORAGE_TRANSFERS_LOG_KEY: ${REACT_APP_LOCAL_STORAGE_TRANSFERS_LOG_KEY}
+      REACT_APP_LOCAL_STORAGE_ACCEPT_TERMS: ${REACT_APP_LOCAL_STORAGE_ACCEPT_TERMS}
+      REACT_APP_ENV: ${REACT_APP_ENV}
+      REACT_APP_AUTO_CONNECT: ${REACT_APP_AUTO_CONNECT}
+      REACT_APP_POLL_BLOCK_NUMBER_INTERVAL: ${REACT_APP_POLL_BLOCK_NUMBER_INTERVAL}
+      REACT_APP_SUPPORTED_CHAIN_ID: ${REACT_APP_SUPPORTED_CHAIN_ID}
+      REACT_APP_STARKNET_CONTRACT_ADDRESS: ${REACT_APP_STARKNET_CONTRACT_ADDRESS}
+      REACT_APP_ETHERSCAN_URL: ${REACT_APP_ETHERSCAN_URL}
+      REACT_APP_VOYAGER_URL: ${REACT_APP_VOYAGER_URL}
+      REACT_APP_STARKSCAN_URL: ${REACT_APP_STARKSCAN_URL}
+      REACT_APP_SUPPORTED_TOKENS: ${REACT_APP_SUPPORTED_TOKENS}
+      REACT_APP_API_ENDPOINT_URL: ${REACT_APP_API_ENDPOINT_URL}
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "50m"
+        max-file: "100"
+    ports:
+      - '${starkgate_frontend_PORT}:3000'

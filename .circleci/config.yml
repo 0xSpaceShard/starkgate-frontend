@@ -1,0 +1,39 @@
+version: 2.1
+
+default-machine-node: &default-machine-node
+  machine:
+    image: ubuntu-2204:2023.04.2
+
+default-deploy-steps: &default-deploy-steps
+  steps:
+    - checkout
+    - run:
+        name: Deploy latest through nested SSH 
+        command: bash .circleci/deploy.sh
+
+jobs:
+  deploy-main:
+    <<: 
+      - *default-machine-node
+      - *default-deploy-steps
+
+  deploy-pipeline:
+    <<: 
+      - *default-machine-node
+      - *default-deploy-steps
+
+workflows:
+  deploy:
+    jobs:
+      - deploy-main:
+          context: starkgate-frontend-main
+          filters:
+            branches:
+              only:
+                - main
+      - deploy-pipeline:
+          context: starkgate-frontend-pipeline
+          filters:
+            branches:
+              only:
+                - pipeline
